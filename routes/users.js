@@ -6,6 +6,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  getCurrentUser,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -14,7 +15,13 @@ const router = express.Router();
 router.get("/", getUsers);
 router.get("/:id", getUserById);
 router.post("/", createUser);
+
 // Protected routes
+router.get(
+  "/me",
+  passport.authenticate("jwt", { session: false }),
+  getCurrentUser
+);
 router.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),

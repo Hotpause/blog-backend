@@ -27,6 +27,18 @@ const createUser = async (req, res) => {
   });
   res.json(user);
 };
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = req.user; // Assuming user is added to req by passport
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get user details" });
+  }
+};
 
 const updateUser = async (req, res) => {
   const id = req.params.id;
@@ -50,4 +62,11 @@ const deleteUser = async (req, res) => {
   res.json({ message: "User deleted" });
 };
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = {
+  getUsers,
+  getUserById,
+  getCurrentUser,
+  createUser,
+  updateUser,
+  deleteUser,
+};
