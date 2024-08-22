@@ -2,8 +2,16 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getComments = async (req, res) => {
-  const comments = await prisma.comment.findMany();
-  res.json(comments);
+  const { postId } = req.query; // Get postId from query parameters
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { postId: parseInt(postId) }, // Filter comments by postId
+    });
+    res.json(comments);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch comments" });
+  }
 };
 
 const getCommentById = async (req, res) => {
